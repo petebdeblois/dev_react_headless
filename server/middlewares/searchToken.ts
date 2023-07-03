@@ -55,24 +55,17 @@ export function ensureTokenGenerated(
           type: RestUserIdType.User,
         },
       ],
+      /** Optional parameters **/
+      filter: "@source",
+      searchHub: 'Pete_Test',
+      userDisplayName: 'IAM a userDisplayName',
+      /***** Optional parameters ******/
+      //  * The name of the search hub to enforce when authenticating a query with this search token.
+      //  * The search hub is a descriptive name of the search interface on which the token is to be used.
+      //  *See https://docs.coveo.com/en/56/#searchhub-string-optional
 
-      /****** Optional parameters ******/
-      /**
-       * The name of the search hub to enforce when authenticating a query with this search token.
-       * The search hub is a descriptive name of the search interface on which the token is to be used.
-       *See https://docs.coveo.com/en/56/#searchhub-string-optional
-
-       * Example:
-       * searchHub: 'supporthub',
-       */
-
-      /**
-       * The filter query expression to apply when authenticating a query with this search token.
-       * See https://docs.coveo.com/en/56/#filter-string-optional
-       *
-       * Example:
-       * filter: 'NOT @source="my secured source"',
-       */
+      //  * Example:
+      //  * See https://docs.coveo.com/en/56/#filter-string-optional
     })
     .then((data: TokenModel) => {
       req.body.token = data.token;
