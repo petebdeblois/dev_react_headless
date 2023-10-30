@@ -27,8 +27,8 @@ const SearchPage: React.FunctionComponent<ISearchPageProps> = (props) => {
   const {logSearchFromLink, logOmniboxFromLink} = loadSearchAnalyticsActions(engine);
   const data = localStorage.getItem('coveo_standalone_search_box_data');
   const options: AutomaticFacetGeneratorOptions = {
-    desiredCount: 1,
-    numberOfValues: 6,
+    desiredCount: 4,
+    numberOfValues: 3,
   };
   const controller = buildAutomaticFacetGenerator(engine, { options });
 
@@ -55,10 +55,10 @@ if (data) {
           </Grid>
         </Grid>
 
-       <AutomaticFacetGenerator controller={controller} />
         <Box my={4}>
           <Grid container>
             <Grid item md={3} sm={12}>
+       <AutomaticFacetGenerator controller={controller} />
               {/* <FacetList /> */}
             </Grid>
             <Grid item md={9} sm={12}>
