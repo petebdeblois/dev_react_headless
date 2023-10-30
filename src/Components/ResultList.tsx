@@ -12,6 +12,7 @@ import {
   SearchEngine,
 } from '@coveo/headless';
 import EngineContext from '../common/engineContext';
+import { Quickview } from './Quickview';
 
 type Template = (result: Result) => React.ReactNode;
 
@@ -80,7 +81,28 @@ const ResultListRenderer: FunctionComponent<ResultListProps> = (props) => {
   headlessResultTemplateManager.registerTemplates(
   
   //https://docs.coveo.com/en/headless/latest/usage/result-templates/
-  
+        {
+        conditions: [],
+        content: (result: Result) => (
+      <ListItem disableGutters key={result.uniqueId}>
+        <Box my={2}>
+              <Box pb={1}>{ListItemLink(engine, result)}</Box>
+          {result.excerpt && (
+            <Box pb={1}>
+              <Quickview result={result} />
+              <Typography color="textPrimary" variant="body2">
+                {result.excerpt}
+              </Typography>
+            </Box>
+          )}
+
+          {result.raw.source && (
+            <FieldValue caption="Source" value={result.raw.source} />
+          )}
+        </Box>
+      </ListItem>
+        )
+      },
     {
     conditions: [ResultTemplatesHelpers.fieldMustMatch("source", ["Pete_Dev_SF_v2"])],
     content: (result: Result) => (
@@ -89,6 +111,7 @@ const ResultListRenderer: FunctionComponent<ResultListProps> = (props) => {
           <Box pb={1}>{ListItemLink(engine, result)}</Box>
           {result.excerpt && (
             <Box pb={1}>
+              <Quickview result={result} />
               <Typography color="textPrimary" variant="body2">
                 {result.excerpt}
               </Typography>
@@ -114,6 +137,7 @@ const ResultListRenderer: FunctionComponent<ResultListProps> = (props) => {
           <Box pb={1}>{ListItemLink(engine, result)}</Box>
           {result.excerpt && (
             <Box pb={1}>
+              <Quickview result={result} />
               <Typography color="textPrimary" variant="body2">
                 {result.excerpt}
               </Typography>

@@ -7,6 +7,7 @@ import List from '@mui/material/List';
 import './Facet.css';
 import {Divider, ListItem, ListItemText, Typography} from '@mui/material';
 import EngineContext from '../common/engineContext';
+import { FacetSearch } from './FacetSearch';
 
 interface FacetProps {
   title: string;
@@ -40,6 +41,18 @@ const FacetRenderer: FunctionComponent<FacetRendererProps> = (props) => {
 
   return (
     <Box mb={5} mr={3} p={1}>
+      <FacetSearch
+        controller={controller.facetSearch}
+        facetState={state.facetSearch}
+        isValueSelected={(facetSearchValue) =>
+          !!state.values.find(
+            (facetValue) =>
+              facetValue.value === facetSearchValue.displayValue &&
+              controller.isValueSelected(facetValue)
+          )
+        
+        }
+      />
       <Box pb={1}>
         <Typography variant="h6" component="h6">
           {props.title}
@@ -52,7 +65,7 @@ const FacetRenderer: FunctionComponent<FacetRendererProps> = (props) => {
 
           return (
             <ListItem
-              style={{padding: 0}}
+              style={{ padding: 0 }}
               key={value.value}
               role={undefined}
               button
@@ -64,7 +77,7 @@ const FacetRenderer: FunctionComponent<FacetRendererProps> = (props) => {
                 checked={controller.isValueSelected(value)}
                 tabIndex={-1}
                 disableRipple
-                inputProps={{'aria-labelledby': labelId}}
+                inputProps={{ "aria-labelledby": labelId }}
               />
               <ListItemText
                 className="truncate inline"

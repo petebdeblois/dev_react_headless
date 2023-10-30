@@ -1,5 +1,3 @@
-import React, {useEffect} from 'react';
-import SearchPage from './Components/SearchPage';
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,8 +5,14 @@ import {
   Navigate,
 } from 'react-router-dom';
 import {Grid, Typography, Box} from '@mui/material';
-import {initializeHeadlessEngine} from './common/Engine';
-import {SearchEngine} from '@coveo/headless';
+
+import Nav from './Components/Nav/Nav';
+import Contact from './Components/Pages/Contact/Contact';
+import Search from './Components/Pages/Search/Search';
+import React, { useEffect } from 'react';
+import { initializeHeadlessEngine } from './common/Engine';
+import { SearchEngine } from '@coveo/headless';
+import HomePage from './Components/HomePage';
 
 export default function App() {
   return (
@@ -21,6 +25,8 @@ export default function App() {
           }
         />
         <Route path="/home" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/error" element={<Error />} />
       </Routes>
     </Router>
@@ -40,6 +46,7 @@ const isEnvValid = () => {
   return variables.reduce(reducer, true);
 };
 
+
 const Home = () => {
   const [engine, setEngine] = React.useState<SearchEngine | null>(null);
 
@@ -50,16 +57,15 @@ const Home = () => {
   }, []);
 
   if (engine) {
-    return (
-      <div className="App">
-        <h1 className='App-header'> Text </h1>
-        {engine && <SearchPage engine={engine} />}
-      </div>
-    );
+    return (<div className="App">
+      <Nav />
+      {engine && <HomePage engine={engine} />}
+    </div>)
   } else {
     return <div>Waiting for engine</div>;
   }
 };
+
 
 const Error = () => {
   return (

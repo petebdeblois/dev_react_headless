@@ -56,16 +56,12 @@ export function ensureTokenGenerated(
         },
       ],
       /** Optional parameters **/
-      filter: "@source",
+      // filter: "@source",
+      //  * The name of the search hub to enforce when authenticating a query with this search token.
       searchHub: 'Pete_Test',
       userDisplayName: 'IAM a userDisplayName',
-      /***** Optional parameters ******/
-      //  * The name of the search hub to enforce when authenticating a query with this search token.
-      //  * The search hub is a descriptive name of the search interface on which the token is to be used.
-      //  *See https://docs.coveo.com/en/56/#searchhub-string-optional
-
       //  * Example:
-      //  * See https://docs.coveo.com/en/56/#filter-string-optional
+      //  * See https://docs.coveo.com/en/56/
     })
     .then((data: TokenModel) => {
       req.body.token = data.token;

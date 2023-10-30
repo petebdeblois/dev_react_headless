@@ -31,7 +31,7 @@ const PagerRenderer: FunctionComponent<PagerProps> = (props) => {
       <Pagination
         page={state.currentPage}
         count={state.maxPage}
-        onChange={(e, page) => setPage(page)}
+        onChange={(_e, page) => setPage(page)}
         shape="rounded"
         size="small"
       />

@@ -7,10 +7,12 @@ import QuerySummary from './QuerySummary';
 import ResultList from './ResultList';
 import Pager from './Pager';
 import Sort from './Sort';
-import FacetList from './FacetList';
+// import FacetList from './FacetList';
+import { AutomaticFacetGenerator } from './AutomaticFacetGenerator';
+import { buildAutomaticFacetGenerator,AutomaticFacetGeneratorOptions } from '@coveo/headless';
 import ResultsPerPage from './ResultsPerPage';
-import {SearchEngine} from '@coveo/headless';
 import {EngineProvider} from '../common/engineContext';
+import {SearchEngine, loadQueryActions, loadSearchAnalyticsActions} from '@coveo/headless';
 
 interface ISearchPageProps {
   engine: SearchEngine;
@@ -21,7 +23,29 @@ const SearchPage: React.FunctionComponent<ISearchPageProps> = (props) => {
   useEffect(() => {
     engine.executeFirstSearch();
   }, [engine]);
+  const { updateQuery } = loadQueryActions(engine);
+  const {logSearchFromLink, logOmniboxFromLink} = loadSearchAnalyticsActions(engine);
+  const data = localStorage.getItem('coveo_standalone_search_box_data');
+  const options: AutomaticFacetGeneratorOptions = {
+    desiredCount: 1,
+    numberOfValues: 6,
+  };
+  const controller = buildAutomaticFacetGenerator(engine, { options });
 
+  // const { value } = JSON.parse(data);
+  // engine.dispatch(updateQuery({ q: value }));
+if (data) {
+    localStorage.removeItem('coveo_standalone_search_box_data');
+
+    const {value, analytics} = JSON.parse(data);
+    const {cause, metadata} = analytics;
+
+    const event = cause === 'searchFromLink' ? logSearchFromLink() : logOmniboxFromLink(metadata);
+    engine.dispatch(updateQuery({q: value}));
+    engine.executeFirstSearch(event);
+} else {
+    engine.executeFirstSearch();
+}
   return (
     <EngineProvider value={engine}>
       <Container maxWidth="lg">
@@ -31,10 +55,11 @@ const SearchPage: React.FunctionComponent<ISearchPageProps> = (props) => {
           </Grid>
         </Grid>
 
+       <AutomaticFacetGenerator controller={controller} />
         <Box my={4}>
           <Grid container>
             <Grid item md={3} sm={12}>
-              <FacetList />
+              {/* <FacetList /> */}
             </Grid>
             <Grid item md={9} sm={12}>
               <Box pl={3}>

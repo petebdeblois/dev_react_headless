@@ -30,8 +30,10 @@ const SearchBoxRenderer: FunctionComponent<SearchBoxProps> = (props) => {
       onChange={() => {
         controller.submit();
       }}
+      // autoHighlight
       options={state.suggestions.map((suggestion) => suggestion.rawValue)}
       freeSolo
+      openOnFocus
       style={{width: 'auto'}}
       renderInput={(params) => (
         <TextField {...params} placeholder="Search" size="small" />
@@ -41,7 +43,10 @@ const SearchBoxRenderer: FunctionComponent<SearchBoxProps> = (props) => {
 };
 
 const SearchBox = () => {
-  const options: SearchBoxOptions = {numberOfSuggestions: 8};
+  const options: SearchBoxOptions = {
+    numberOfSuggestions: 4
+  };
+
   const engine = useContext(EngineContext)!;
   const controller = buildSearchBox(engine, {options});
   return <SearchBoxRenderer controller={controller} />;
